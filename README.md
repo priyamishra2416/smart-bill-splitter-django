@@ -19,10 +19,4 @@ A Django-based expense sharing web application.
 - Bootstrap
 - SQLite
 
-## Screenshots
 
-(Add screenshots here)
-
-## Author
-
-Priya Mishra
