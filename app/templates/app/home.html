@@ -1,0 +1,227 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">
+
+    Expense History
+
+</h1>
+
+
+<!-- Dashboard Cards -->
+
+<div class="row mb-5">
+
+    <div class="col-md-4">
+
+        <div class="card shadow border-0 text-center p-4">
+
+            <h3>
+                ₹{{ total_amount }}
+            </h3>
+
+            <p class="text-muted">
+
+                Total Amount
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow border-0 text-center p-4">
+
+            <h3>
+                {{ total_expenses }}
+            </h3>
+
+            <p class="text-muted">
+
+                Total Expenses
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow border-0 text-center p-4">
+
+            <h3>
+                {{ total_friends }}
+            </h3>
+
+            <p class="text-muted">
+
+                Total Friends
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Search Form -->
+
+<form method="GET"
+      class="mb-5">
+
+    <input type="text"
+           name="search"
+           class="form-control shadow-sm p-3"
+           placeholder="Search Expense">
+
+</form>
+
+
+<!-- Expense Cards -->
+
+<div class="row">
+
+    {% for expense in expenses %}
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow-lg mb-4">
+
+            <div class="card-body">
+
+                <h3 class="fw-bold">
+
+                    {{ expense.title }}
+
+                </h3>
+
+                <hr>
+
+                <p>
+
+                    <strong>Total:</strong>
+                    ₹{{ expense.amount }}
+
+                </p>
+
+                <p>
+
+                    <strong>Paid By:</strong>
+                    {{ expense.paid_by }}
+
+                </p>
+
+                <p>
+
+                    <strong>Participants:</strong>
+
+                    {% for person in expense.participants.all %}
+
+                        {{ person.name }}{% if not forloop.last %}, {% endif %}
+
+                    {% endfor %}
+
+                </p>
+
+                <p class="text-success fw-bold">
+
+                    Each Pays:
+                    ₹{{ expense.split_amount }}
+
+                </p>
+
+
+                <!-- Buttons -->
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <a href="/update-expense/{{ expense.id }}/"
+                       class="btn btn-primary w-50">
+
+                        Update
+
+                    </a>
+
+                    <a href="/delete-expense/{{ expense.id }}/"
+                       class="btn btn-danger w-50">
+
+                        Delete
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <h4 class="text-center text-muted">
+
+        No Expenses Found
+
+    </h4>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- Who Owes Whom -->
+
+<div class="card shadow-lg border-0 mt-5">
+
+    <div class="card-body p-4">
+
+        <h2 class="mb-4 text-center">
+
+            💰 Who Owes Whom
+
+        </h2>
+
+        {% for item in owes_data %}
+
+        <div class="alert alert-warning">
+
+            <strong>
+
+                {{ item.person }}
+
+            </strong>
+
+            owes
+
+            <strong>
+
+                {{ item.paid_to }}
+
+            </strong>
+
+            ₹{{ item.amount }}
+
+        </div>
+
+        {% empty %}
+
+        <p class="text-center text-muted">
+
+            No pending splits
+
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

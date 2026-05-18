@@ -1,0 +1,98 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <div class="card shadow-lg border-0">
+
+            <div class="card-body p-5">
+
+                <h2 class="text-center mb-4">
+
+                    Add Expense
+
+                </h2>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <input type="text"
+                           name="title"
+                           class="form-control p-3 mb-4"
+                           placeholder="Expense Title"
+                           required>
+
+                    <input type="number"
+                           name="amount"
+                           class="form-control p-3 mb-4"
+                           placeholder="Amount"
+                           required>
+
+                    <label class="fw-bold mb-2">
+
+                        Paid By
+
+                    </label>
+
+                    <select name="paid_by"
+                            class="form-select p-3 mb-4">
+
+                        {% for friend in friends %}
+
+                        <option value="{{ friend.id }}">
+
+                            {{ friend.name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <label class="fw-bold mb-2">
+
+                        Participants
+
+                    </label>
+
+                    {% for friend in friends %}
+
+                    <div class="form-check mb-2">
+
+                        <input type="checkbox"
+                               name="participants"
+                               value="{{ friend.id }}"
+                               class="form-check-input">
+
+                        <label class="form-check-label">
+
+                            {{ friend.name }}
+
+                        </label>
+
+                    </div>
+
+                    {% endfor %}
+
+                    <button class="btn btn-success w-100 mt-4 p-3">
+
+                        Add Expense
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
